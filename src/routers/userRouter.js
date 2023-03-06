@@ -35,9 +35,13 @@ router.get("/profile", auth, userController.profile);
 router.get("/list_user/:role", userController.getAllUser);
 
 //14 update info
-router.put("/update", auth, userController.updateProfile);
+router.put("/update", userController.updateProfile);
 
 //15 update role
 router.put("/update_role", userController.updateRole);
 
+//16. forgot
+router.post("/forgot", userController.forgotPassword);
+//17.reset
+router.post("/reset", auth, userController.resetPassword);
 module.exports = router;

@@ -11,6 +11,7 @@ const UserController = {
   registerCustomer: async (req, res) => {
     try {
       const { name, gender, email, phone, address, date, password } = req.body;
+      console.log({ name, gender, email, phone, address, date, password });
       if (!validateEmail(email))
         return res.status(400).json({ msg: "Invalid Email!" });
 
@@ -29,7 +30,7 @@ const UserController = {
         address,
         date,
         password: passwordHash,
-        role: 0,
+        role: 1,
       };
 
       const activation_token = createActivationToken(newUser);
@@ -51,6 +52,7 @@ const UserController = {
   activateEmail: async (req, res) => {
     try {
       const { activation_token } = req.body;
+      console.log(activation_token);
       const user = jwt.verify(
         activation_token,
         process.env.ACTIVATION_TOKEN_SECRET
@@ -83,11 +85,16 @@ const UserController = {
       const user = await UserModel.findOne({ email });
       console.log("login:id: " + user._id);
       if (!user)
-        return res.status(400).json({ msg: "This email does not exist." });
+        return res
+          .status(400)
+          .json({ msg: "This email does not exist.", rs: 0 });
 
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
-        return res.status(400).json({ msg: "Password is incorrect." });
+      console.log({ isMatch });
+      if (!isMatch) {
+        console.log("Password is incorrect.");
+        return res.status(400).json({ msg: "Password is incorrect.", rs: 0 });
+      }
 
       const refresh_token = createRefreshToken({ id: user._id });
       console.log("refresh_token: ", refresh_token);
@@ -101,9 +108,9 @@ const UserController = {
 
       if (user.role == 1) {
         console.log("true");
-        return res.status(200).json({ msg: "Login customer success!" });
+        return res.status(200).json({ msg: "Login customer success!", rs: 1 });
       } else {
-        return res.status(403).json({ msg: "Not customer" });
+        return res.status(400).json({ msg: "Not customer", rs: 0 });
       }
     } catch (err) {
       return res.status(500).json({ msg: "Login: " + err.message });
@@ -117,11 +124,13 @@ const UserController = {
       const user = await UserModel.findOne({ email });
       console.log("login:id: " + user._id);
       if (!user)
-        return res.status(400).json({ msg: "This email does not exist." });
+        return res
+          .status(200)
+          .json({ msg: "This email does not exist.", rs: 0 });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
-        return res.status(400).json({ msg: "Password is incorrect." });
+        return res.status(200).json({ msg: "Password is incorrect.", rs: 0 });
 
       const refresh_token = createRefreshToken({ id: user._id });
       console.log("refresh_token: ", refresh_token);
@@ -134,8 +143,11 @@ const UserController = {
       });
 
       if (user.role == 0) {
-        console.log("true");
-        return res.status(200).json({ msg: "Login admin success!" });
+        console.log("admin");
+        return res.status(200).json({ msg: "Login admin success!", rs: 1 });
+      } else {
+        console.log("not admin");
+        return res.status(200).json({ msg: "You are not admin!!!", rs: 0 });
       }
     } catch (err) {
       return res.status(500).json({ msg: "Login: " + err.message });
@@ -199,7 +211,8 @@ const UserController = {
   //14. Cập nhật thông tin
   updateProfile: async (req, res) => {
     try {
-      await UserModel.findByIdAndUpdate(req.user.id, req.body).then(() => {
+      console.log(req.body);
+      await UserModel.findByIdAndUpdate(req.body._id, req.body).then(() => {
         return res.status(200).json({ msg: "Update profile success!!" });
       });
     } catch (error) {
@@ -220,6 +233,46 @@ const UserController = {
       });
     } catch (error) {
       return res.status(500).json({ msg: "updateRole " + error });
+    }
+  },
+  //16. Quên mk
+  forgotPassword: async (req, res) => {
+    try {
+      const { email } = req.body;
+      console.log(email);
+      const user = await UserModel.findOne({ email });
+      if (!user)
+        return res.status(400).json({ msg: "This email does not exist." });
+
+      const access_token = createAccessToken({ id: user._id });
+      const url = `${CLIENT_CUSTOMER_URL}/user/reset/${access_token}`;
+
+      sendMail(email, url, "Reset your password");
+      return res
+        .status(200)
+        .json({ msg: "Re-send the password, please check your email." });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  //17. reset password
+  resetPassword: async (req, res) => {
+    try {
+      const { password } = req.body;
+      console.log(password);
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      await UserModel.findOneAndUpdate(
+        { _id: req.user.id },
+        {
+          password: passwordHash,
+        }
+      ).then(() =>
+        res.status(200).json({ msg: "Password successfully changed!" })
+      );
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
     }
   },
 };

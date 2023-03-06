@@ -39,19 +39,19 @@ const sendEmail = (to, url, txt) => {
   const mailOptions = {
     from: SENDER_EMAIL_ADDRESS,
     to: to,
-    subject: "DevAT Channel",
+    subject: "BookShop.",
     html: `
             <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the DevAT channel.</h2>
-            <p>Congratulations! You're almost set to start using DEVAT✮SHOP.
+            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to BookShop.</h2>
+            <p>Congratulations! You're almost set to start using BookShop.
                 Just click the button below to validate your email address.
             </p>
+            <p style="display:flex flex-direction:row justify-content:center">
             
-            <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${txt}</a>
+              <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px;">${txt}</a>
+            </p>
         
-            <p>If the button doesn't work for any reason, you can also click on the link below:</p>
-        
-            <div>${url}</div>
+          
             </div>
         `,
   };
