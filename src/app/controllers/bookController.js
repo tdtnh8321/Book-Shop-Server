@@ -154,6 +154,7 @@ const BookController = {
         i.name = item._id.name;
         i.slug = item._id.slug;
         i.image = item._id.image;
+        i.price = item._id.price;
         i.amount = item.amount;
         listResult.push(i);
       });

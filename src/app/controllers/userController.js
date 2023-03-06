@@ -86,14 +86,14 @@ const UserController = {
       console.log("login:id: " + user._id);
       if (!user)
         return res
-          .status(400)
+          .status(200)
           .json({ msg: "This email does not exist.", rs: 0 });
 
       const isMatch = await bcrypt.compare(password, user.password);
       console.log({ isMatch });
       if (!isMatch) {
         console.log("Password is incorrect.");
-        return res.status(400).json({ msg: "Password is incorrect.", rs: 0 });
+        return res.status(200).json({ msg: "Password is incorrect.", rs: 0 });
       }
 
       const refresh_token = createRefreshToken({ id: user._id });
@@ -110,7 +110,8 @@ const UserController = {
         console.log("true");
         return res.status(200).json({ msg: "Login customer success!", rs: 1 });
       } else {
-        return res.status(400).json({ msg: "Not customer", rs: 0 });
+        console.log("false");
+        return res.status(200).json({ msg: "Not customer", rs: 0 });
       }
     } catch (err) {
       return res.status(500).json({ msg: "Login: " + err.message });
