@@ -19,16 +19,12 @@ app.use(
       `${process.env.CLIENT_CUSTOMER_URL}`,
       `${process.env.CLIENT_ADMIN_URL}`,
     ],
+    allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
     credentials: true,
+    exposedHeaders: ["*", "Authorization"],
   })
 );
-app.use({
-  origin: [
-    `${process.env.CLIENT_CUSTOMER_URL}`,
-    `${process.env.CLIENT_ADMIN_URL}`,
-  ],
-  credentials: true,
-});
+
 app.use(cookieParser());
 app.use(
   fileUpload({
