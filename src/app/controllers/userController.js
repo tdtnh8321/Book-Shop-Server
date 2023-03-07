@@ -97,18 +97,22 @@ const UserController = {
       }
 
       const refresh_token = createRefreshToken({ id: user._id });
-      console.log("refresh_token: ", refresh_token);
-      res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        secure: false,
-        path: "/user/refresh_token",
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      });
+      // console.log("refresh_token: ", refresh_token);
+      // res.cookie("refreshtoken", refresh_token, {
+      //   httpOnly: true,
+      //   secure: false,
+      //   path: "/user/refresh_token",
+      //   sameSite: "strict",
+      //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      // });
 
       if (user.role == 1) {
         console.log("true");
-        return res.status(200).json({ msg: "Login customer success!", rs: 1 });
+        return res.status(200).json({
+          msg: "Login customer success!",
+          rs: 1,
+          refresh_token: refresh_token, //
+        });
       } else {
         console.log("false");
         return res.status(200).json({ msg: "Not customer", rs: 0 });
@@ -160,11 +164,8 @@ const UserController = {
   //8. tạo AccessToken
   getAccessToken: async (req, res) => {
     try {
-      console.log("----");
-      for (const [key, value] of Object.entries(req.cookies)) {
-        console.log(`${key}: ${value}`);
-      }
-      const rf_token = req.cookies.refreshtoken;
+      //const rf_token = req.cookies.refreshtoken;
+      rf_token = req.query.refreshtoken;
       console.log({ rf_token });
       if (!rf_token) return res.status(400).json({ msg: "Please login now!" });
 
