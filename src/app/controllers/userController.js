@@ -139,17 +139,19 @@ const UserController = {
 
       const refresh_token = createRefreshToken({ id: user._id });
       console.log("refresh_token: ", refresh_token);
-      res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        secure: false,
-        path: "/user/refresh_token",
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      });
+      // res.cookie("refreshtoken", refresh_token, {
+      //   httpOnly: true,
+      //   secure: false,
+      //   path: "/user/refresh_token",
+      //   sameSite: "strict",
+      //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      // });
 
       if (user.role == 0) {
         console.log("admin");
-        return res.status(200).json({ msg: "Login admin success!", rs: 1 });
+        return res
+          .status(200)
+          .json({ msg: "Login admin success!", rs: 1, refresh_token });
       } else {
         console.log("not admin");
         return res.status(200).json({ msg: "You are not admin!!!", rs: 0 });
