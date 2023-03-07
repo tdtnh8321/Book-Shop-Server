@@ -160,6 +160,7 @@ const UserController = {
   //8. tạo AccessToken
   getAccessToken: async (req, res) => {
     try {
+      console.log("cookie: ", req.cookies);
       const rf_token = req.cookies.refreshtoken;
       console.log({ rf_token });
       if (!rf_token) return res.status(400).json({ msg: "Please login now!" });
