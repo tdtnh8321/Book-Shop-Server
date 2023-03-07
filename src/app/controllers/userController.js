@@ -80,11 +80,6 @@ const UserController = {
   //5.Đăng nhập khách hàng
   loginCustomer: async (req, res) => {
     try {
-      res.setHeader("Access-Control-Allow-Origin", [
-        process.env.CLIENT_CUSTOMER_URL,
-        process.env.CLIENT_ADMIN_URL,
-      ]);
-      res.setHeader("Access-Control-Allow-Credentials", "true");
       const { email, password } = req.body;
       console.log({ email, password });
       const user = await UserModel.findOne({ email });
