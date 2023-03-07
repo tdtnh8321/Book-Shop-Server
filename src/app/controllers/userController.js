@@ -99,8 +99,8 @@ const UserController = {
       const refresh_token = createRefreshToken({ id: user._id });
       console.log("refresh_token: ", refresh_token);
       res.cookie("refreshtoken", refresh_token, {
-        httpOnly: true,
-        secure: true,
+        httpOnly: false,
+        secure: false,
         path: "/user/refresh_token",
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
