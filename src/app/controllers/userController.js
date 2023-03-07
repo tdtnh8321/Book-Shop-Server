@@ -100,7 +100,7 @@ const UserController = {
       console.log("refresh_token: ", refresh_token);
       res.cookie("refreshtoken", refresh_token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         path: "/user/refresh_token",
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
