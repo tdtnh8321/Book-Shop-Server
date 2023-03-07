@@ -102,7 +102,7 @@ const UserController = {
         httpOnly: true,
         secure: false,
         path: "/user/refresh_token",
-        sameSite: "none",
+        sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
