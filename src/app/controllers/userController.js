@@ -99,7 +99,7 @@ const UserController = {
       const refresh_token = createRefreshToken({ id: user._id });
       console.log("refresh_token: ", refresh_token);
       res.cookie("refreshtoken", refresh_token, {
-        httpOnly: false,
+        httpOnly: true,
         secure: false,
         path: "/user/refresh_token",
         sameSite: "none",

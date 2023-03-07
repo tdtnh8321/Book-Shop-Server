@@ -15,13 +15,27 @@ app.use(
 app.use(express.json());
 app.use(
   cors({
-    credentials: true,
     origin: (_, callback) => callback(null, true),
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     optionsSuccessStatus: 200,
+    credentials: true,
+    allowedHeaders: [
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Methods",
+      "Origin",
+      "WithCredentials",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "Authorization",
+      "X-HTTP-Method-Override",
+      "Set-Cookie",
+      "Cookie",
+      "Request",
+    ],
   })
 );
-
 app.use(cookieParser());
 app.use(
   fileUpload({
