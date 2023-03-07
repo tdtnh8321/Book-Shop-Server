@@ -15,13 +15,10 @@ app.use(
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      `${process.env.CLIENT_CUSTOMER_URL}`,
-      `${process.env.CLIENT_ADMIN_URL}`,
-    ],
-    allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
     credentials: true,
-    exposedHeaders: ["*", "Authorization"],
+    origin: (_, callback) => callback(null, true),
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    optionsSuccessStatus: 200,
   })
 );
 
