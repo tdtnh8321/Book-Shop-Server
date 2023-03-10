@@ -34,7 +34,7 @@ const UserController = {
       };
 
       const activation_token = createActivationToken(newUser);
-      const url = `${CLIENT_CUSTOMER_URL}/user/activate/${activation_token}`;
+      const url = `https://book-shop-customer-tdtnh8321.vercel.app/user/activate/${activation_token}`;
       sendMail(email, url, "Verify your email address");
 
       return res
