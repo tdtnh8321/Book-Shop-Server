@@ -50,7 +50,7 @@ const sendEmail = (to, url, txt) => {
             
               <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px;">${txt}</a>
             </p>
-        
+            
           
             </div>
         `,

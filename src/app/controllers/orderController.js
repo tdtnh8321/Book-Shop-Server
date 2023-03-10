@@ -276,5 +276,20 @@ const OrderController = {
       return res.status(500).json({ msg: "getOrderInfo: " + error });
     }
   },
+  //9. Lấy danh sách order của shipper + statusOrder
+  getOrderByShipperIdAndStatusOrder: async (req, res) => {
+    try {
+      const idShipper = req.query.idshipper;
+      const statusOrder = req.query.statusorder;
+      console.log({ idShipper, statusOrder });
+      await orderModel
+        .find({ status: statusOrder })
+        .then((data) => res.status(200).json(data));
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ msg: "getOrderByShipperIdAndStatusOrder: " + error });
+    }
+  },
 };
 module.exports = OrderController;

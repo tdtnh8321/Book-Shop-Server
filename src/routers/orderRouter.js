@@ -17,6 +17,8 @@ router.put("/update", orderController.updateStatus);
 
 //7
 router.get("/detail/:id", orderController.getAllOrderDetailOfOrderId);
+//9
+router.get("/shipper", orderController.getOrderByShipperIdAndStatusOrder);
 //8
 router.get("/:id", orderController.getOrderInfo);
 module.exports = router;
